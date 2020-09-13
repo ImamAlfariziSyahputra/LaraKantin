@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Barang;
 use App\Pesanan;
 use App\PesananDetail;
+use App\User;
 
+use Alert;
 use Auth;
 use Carbon\Carbon;
 
@@ -38,7 +41,7 @@ class PesanController extends Controller
             return redirect('pesan', $id);
         }
         // cek validasi
-        $cek_pesanan = Pesanan::where('user_id', Auth::user()->id)->where('status', 0)->first();
+        $cek_pesanan = Pesanan::where('user_id', Auth::user()->id)->where('status', 0)->first(); // Pesanan Yang Statusnya 0
 
         // Simpan ke database pesanan
         if (empty($cek_pesanan)) {
@@ -47,6 +50,7 @@ class PesanController extends Controller
             $pesanan->user_id = Auth::user()->id;
             $pesanan->tanggal = $tanggal;
             $pesanan->status = 0;
+            $pesanan->kode = mt_rand(100, 999);
             $pesanan->jumlah_harga = 0;
             $pesanan->save();
         }
@@ -79,9 +83,21 @@ class PesanController extends Controller
         $pesanan->jumlah_harga += $barang->harga * $request->jumlah_pesan;
         $pesanan->update();
 
+        alert()->success('Pesanan Berhasil Masuk Keranjang', 'Optional Title');
         return redirect('home');
     }
 
+    public function checkout()
+    {
+        $pesanan = Pesanan::where('user_id', Auth::user()->id)->where('status', 0)->first();
+        $pesanan_details = [];
+        if(!empty($pesanan))
+        {
+            $pesanan_details = PesananDetail::where('pesanan_id', $pesanan->id)->get();
+        }
+
+        return view('pesan.checkout', compact('pesanan', 'pesanan_details'));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -147,6 +163,48 @@ class PesanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $pesanan_detail = PesananDetail::where('id', $id)->first();
+        $pesanan = Pesanan::where('id', $pesanan_detail->pesanan_id)->first();
+
+        $pesanan->jumlah_harga -= $pesanan_detail->jumlah_harga;
+        $pesanan->update();
+
+        $pesanan_detail->delete();
+
+        alert()->success('Pesanan Berhasil Dihapus', 'Error');
+        return redirect('checkout');
+    }
+
+    public function confirm()
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+
+        if(empty($user->alamat))
+        {
+            alert()->error('Identitas Mohon Dilengkapi', 'Error');
+            return redirect('profile');
+        }
+
+        if(empty($user->nohp))
+        {
+            alert()->error('Identitas Mohon Dilengkapi', 'Hapus');
+            return redirect('profile');
+        }
+
+        $pesanan = Pesanan::where('user_id', Auth::user()->id)->where('status', 0)->first();
+        $pesanan_id = $pesanan->id;
+
+        $pesanan->status = 1;
+        $pesanan->update();
+
+        $pesanan_details = PesananDetail::where('pesanan_id', $pesanan_id)->get();
+        foreach ($pesanan_details as $pesanan_detail) {
+            $barang = Barang::where('id', $pesanan_detail->barang_id)->first();
+            $barang->stok -= $pesanan_detail->jumlah;
+            $barang->update();
+        }
+
+        alert()->success('Pesanan Berhasil Checkout, Silahkan Lakukan Pembayaran', 'Success');
+        return redirect('history/'. $pesanan_id);
     }
 }

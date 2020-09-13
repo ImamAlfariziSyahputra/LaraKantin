@@ -17,8 +17,21 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// Index
 Route::get('/home', 'HomeController@index')->name('home');
 // Detail
 Route::get('pesan/{id}', 'PesanController@show');
 // Submit Jumlah Pesan
 Route::post('pesan/{id}', 'PesanController@pesan');
+// Checkout
+Route::get('checkout', 'PesanController@checkout');
+// Hapus Checkout
+Route::delete('checkout/{id}', 'PesanController@destroy');
+
+Route::get('confirmcheckout', 'PesanController@confirm');
+
+Route::get('profile', 'ProfileController@index');
+Route::post('profile', 'ProfileController@update');
+
+Route::get('history', 'HistoryController@index');
+Route::get('history/{id}', 'HistoryController@detail');
