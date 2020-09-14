@@ -10,4 +10,6 @@ class Barang extends Model
     {
         return $this->hasMany('App\PesananDetail', 'barang_id', 'id');
     }
+
+    protected $fillable = ['nama_barang','gambar','harga','stok','keterangan'];
 }

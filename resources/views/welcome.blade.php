@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    <img src="{{ url('images/logo.png') }}" class="rounded mx-auto d-block" width="700">
+                    <img src="{{ url('images/kantin.png') }}" class="rounded mx-auto d-block" width="550">
                 </div>
             </div>
         </div>

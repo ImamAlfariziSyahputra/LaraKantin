@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.user')
 
 @section('content')
 <div class="container">
@@ -74,7 +74,7 @@
                             </tr>
                             <tr>
                                 <td colspan="5" align="right">
-                                    <strong>Kode Unik :</strong>
+                                    <strong>Total Yang Harus Dibayar :</strong>
                                 </td>
                                 <td align="right">
                                     <strong>Rp. {{ number_format($pesanan->kode + $pesanan->jumlah_harga,0,',','.') }} </strong>
