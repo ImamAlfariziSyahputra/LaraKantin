@@ -13,7 +13,7 @@
 
     <script src="https://kit.fontawesome.com/4cba960697.js" crossorigin="anonymous"></script>
 
-    <title>Sidebar + Navbar</title>
+    <title>Kantin</title>
 </head>
 <body>
     
@@ -90,18 +90,18 @@
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{ url('snack') }}">
                         <i class="fas fa-fw fa-clipboard"></i>Snack
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{ url('minuman') }}">
                         <i class="fas fa-fw fa-wine-glass"></i> Minuman
                     </a>
                 </li>
                 <li>
-                    <a href="">
-                        <i class="fas fa-fw fa-wine-glass"></i> Minuman
+                    <a href="{{ url('wafer') }}">
+                        <i class="fas fa-fw fa-wine-glass"></i> Wafer
                     </a>
                 </li>
                 
@@ -124,13 +124,17 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function() {
-        $('#sidebarCollapse').on('click', function() {
-        $('#sidebar, #content').toggleClass('active');
-        $('.collapse.in').toggleClass('in');
-        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-        document.getElementById("bodyContent").style.width="100%";
+            $('#sidebarCollapse').on('click', function() {
+                $('#sidebar, #content').toggleClass('active');
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+                document.getElementById("bodyContent").style.width="100%";
+            });
+            $(document).on('change', '#avatar', function() {
+                let avatar = $('#avatar').val()
+                $('.custom-file-label').text(avatar)
+            });
         });
-    });
     </script>
 
 </body>

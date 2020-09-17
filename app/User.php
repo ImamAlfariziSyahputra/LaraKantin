@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role'
+        'name', 'email', 'password', 'role', 'avatar'
     ];
 
     /**
@@ -40,5 +40,14 @@ class User extends Authenticatable
     public function pesanan()
     {
         return $this->hasMany('App\Pesanan', 'user_id', 'id');
+    }
+
+    public function getAvatar()
+    {
+        if (!$this->avatar) {
+            return asset('ava/default.png');
+        }
+
+        return asset('ava/' . $this->avatar);
     }
 }

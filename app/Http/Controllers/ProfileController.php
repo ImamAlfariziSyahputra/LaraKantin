@@ -91,6 +91,16 @@ class ProfileController extends Controller
 
         $user->update();
 
+        if ($request->hasFile('avatar')) {
+            $image_path = "/ava/" . $user->avatar;
+            if (file_exists($image_path)) {
+                @unlink($image_path);
+            }
+            $request->file('avatar')->move('ava/', $request->file('avatar')->getClientOriginalName());
+            $user->avatar = $request->file('avatar')->getClientOriginalName();
+            $user->save();
+        }
+
         alert()->success('User Berhasil Diubah', 'Optional Title');
         return redirect('profile');
     }

@@ -6,12 +6,12 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="text-primary">Form Tambah Data Barang</h3>
+                    <h3 class="text-primary">Form Edit Data Barang</h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6 offset-md-3">
-                            <form action="/barang/{{ $barang->id }}" method="post">
+                            <form action="/barang/{{ $barang->id }}" method="post" enctype="multipart/form-data">
                                 @method('patch')
                                 @csrf
                                 <div class="form-group">
@@ -21,12 +21,12 @@
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group">
-                                    <label for="gambar">Gambar</label>
-                                    <input type="text" class="form-control @error('noppdb') is-invalid @enderror" value="{{ $barang->gambar }}" name="gambar" id="gambar" placeholder="Gambar">
-                                    @error('gambar')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
+                                <div class="form-group mb-3">
+                                    <label for="gambar" class="">Gambar</label>
+                                    <div class="custom-file ">
+                                        <input type="file" class="custom-file-input" id="gambar" name="gambar" aria-describedby="inputGroupFileAddon01">
+                                        <label class="custom-file-label" for="gambar">Choose file</label>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="harga">Harga</label>

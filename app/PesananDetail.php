@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PesananDetail extends Model
 {
+    protected $fillable = ['barang_id', 'pesanan_id', 'jumlah', 'jumlah_harga'];
     public function barang()
     {
         return $this->belongsTo('App\Barang', 'barang_id', 'id');

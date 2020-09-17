@@ -43,8 +43,9 @@
                                 </td>
                                 <td>Rp. {{ number_format($pesanan->jumlah_harga+$pesanan->kode,0,',','.') }}</td>
                                 <td>
-                                    <a href="{{ url('history') }}/{{ $pesanan->id }}" class="btn btn-sm btn-success">
-                                        <i class="fa fa-info" aria-hidden="true"> Detail</i>
+                                    <a href="{{ url('history') }}/{{ $pesanan->id }}" class="btn btn-sm btn-success font-weight-bold">
+                                        <i class="fa fa-info" aria-hidden="true"></i>
+                                        Detail
                                     </a>
                                 </td>
                             </tr>

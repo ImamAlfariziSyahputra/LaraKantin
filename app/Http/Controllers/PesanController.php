@@ -40,11 +40,14 @@ class PesanController extends Controller
         {
             return redirect('pesan', $id);
         }
-        // cek validasi
+
+        // cek validasi 
+        // "Jika User tersebut Sudah pernah melakukan pesanan yang status nya 0"
+        // Jangan buat Pesanan Baru!
         $cek_pesanan = Pesanan::where('user_id', Auth::user()->id)->where('status', 0)->first(); // Pesanan Yang Statusnya 0
 
-        // Simpan ke database pesanan
-        if (empty($cek_pesanan)) {
+        // Membuat Pesanan
+        if (empty($cek_pesanan)) { // Jika User Tidak Ada Pesanan Yang Status nya 0, Buat Pesanan Baru
 
             $pesanan = new Pesanan;
             $pesanan->user_id = Auth::user()->id;
@@ -54,31 +57,31 @@ class PesanController extends Controller
             $pesanan->jumlah_harga = 0;
             $pesanan->save();
         }
-        // simpan ke database pesanan_detail
+        // Ambil Data Pesanan Yang Sudah Dibuat Diatas
         $pesanan_baru = Pesanan::where('user_id', Auth::user()->id)->where('status', 0)->first();
 
         // cek pesanan detail
         $cek_pesanan_detail = PesananDetail::where('barang_id', $barang->id)->where('pesanan_id', $pesanan_baru->id)->first();
 
-        if (empty($cek_pesanan_detail)) {
+        if (empty($cek_pesanan_detail)) { // Jika Barang Belum Pernah DiPesan (Tidak Pernah Memesan Chitato)
             $pesanan_detail = new PesananDetail();
             $pesanan_detail->barang_id = $barang->id;
             $pesanan_detail->pesanan_id = $pesanan_baru->id;
             $pesanan_detail->jumlah = $request->jumlah_pesan;
             $pesanan_detail->jumlah_harga = $barang->harga*$request->jumlah_pesan;
             $pesanan_detail->save();
-        } else {
+        } else { // Jika Memesan Lagi Barang Yang Sama. Ubah Jumlah Dan Harga Sebelumnya 
             $pesanan_detail = PesananDetail::where('barang_id', $barang->id)->where('pesanan_id', $pesanan_baru->id)->first();
 
             $pesanan_detail->jumlah += $request->jumlah_pesan;
-
-            // harga sekarang
+            // Menghitung Harga Baru (Subtotal)
             $harga_pesanan_detail_baru = $barang->harga * $request->jumlah_pesan;
+            // Harga Lama Ditambah Dengan Harga Baru (Subtotal)
             $pesanan_detail->jumlah_harga += $harga_pesanan_detail_baru;
             $pesanan_detail->update();
         }
 
-        // jumlah total
+        // Hitung Harga Grand Total di Table Pesanan
         $pesanan = Pesanan::where('user_id', Auth::user()->id)->where('status', 0)->first();
         $pesanan->jumlah_harga += $barang->harga * $request->jumlah_pesan;
         $pesanan->update();
@@ -171,7 +174,7 @@ class PesanController extends Controller
 
         $pesanan_detail->delete();
 
-        alert()->success('Pesanan Berhasil Dihapus', 'Error');
+        alert()->success('Pesanan Berhasil Dihapus', 'Success');
         return redirect('checkout');
     }
 
@@ -197,6 +200,7 @@ class PesanController extends Controller
         $pesanan->status = 1;
         $pesanan->update();
 
+        // trigger stok
         $pesanan_details = PesananDetail::where('pesanan_id', $pesanan_id)->get();
         foreach ($pesanan_details as $pesanan_detail) {
             $barang = Barang::where('id', $pesanan_detail->barang_id)->first();

@@ -81,7 +81,16 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    <img src="{{ url('images/kantin.png') }}" class="rounded mx-auto d-block" width="550">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="{{ url('images/kantin.png') }}" class="rounded mx-auto d-block" width="400">
+                        </div>
+                        <div class="col-md-6">
+                            <iframe width="420" height="250"
+                            src="https://www.youtube.com/embed/9GZEAQtEdzU">
+                            </iframe>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

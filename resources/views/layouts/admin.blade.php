@@ -49,14 +49,20 @@
             </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="{{ url('barang') }}">
                     <i class="fas fa-fw fa-database"></i>
                     <span>Data Barang</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="">
+                <a class="nav-link" href="{{ url('kategori') }}">
+                    <i class="fas fa-fw fa-database"></i>
+                    <span>Data Kategori</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('invoice') }}">
                     <i class="fas fa-fw fa-file-invoice"></i>
                     <span>Invoices</span></a>
             </li>
@@ -95,7 +101,7 @@
                 <li class="nav-item dropdown no-arrow">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth()->user()->name }}</span>
-                        <img class="img-profile rounded-circle" src="{{ url('images') }}/leji.jpg" alt="...">
+                        <img class="img-profile rounded-circle" src="{{ url('ava') }}/leji.jpg" alt="...">
                     </a>
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -178,6 +184,15 @@
 
 <!-- Page level custom scripts -->
 <script src="{{ url('assets') }}/js/demo/datatables-demo.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $(document).on('change', '#gambar', function() {
+            let gambar = $('#gambar').val()
+            $('.custom-file-label').text(gambar)
+        });
+    });
+</script>
 
 </body>
 

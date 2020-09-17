@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Alert;
 use App\Barang;
+use App\Kategori;
 
 class BarangController extends Controller
 {
@@ -26,7 +27,8 @@ class BarangController extends Controller
      */
     public function create()
     {
-        return view('admin/barang/tambah');
+        $kategoris = Kategori::all();
+        return view('admin/barang/tambah', compact('kategoris'));
     }
 
     /**
@@ -39,13 +41,29 @@ class BarangController extends Controller
     {
         $request->validate([
             'nama_barang' => 'required|min:2|max:60',
-            'gambar' => 'required',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif',
             'harga' => 'required|numeric',
             'stok' => 'required|numeric',
-            'keterangan' => 'required'
+            'keterangan' => 'required',
+            'id_kategori' => 'required',
         ]);
+        
+        if($request->file('gambar')) {
+            // $gambar = $request->file('gambar')->store('uploads', 'public'); // acak nama gambar
+            $gambar = $request->file('gambar')->getClientOriginalName();
+            $request->file('gambar')->move('uploads/', $gambar);
+        }
 
-        Barang::create($request->all());
+        
+        // Barang::create($request->all());
+        Barang::insert([
+            'nama_barang' => $request->get('nama_barang'),
+            'gambar' => $gambar,
+            'harga' => $request->get('harga'),
+            'stok' => $request->get('stok'),
+            'keterangan' => $request->get('keterangan'),
+            'id_kategori' => $request->get('id_kategori')
+        ]);
 
         alert()->success('Data Berhasil Ditambah', 'Optional Title');
         return redirect('/barang');
@@ -84,7 +102,6 @@ class BarangController extends Controller
     {
         $request->validate([
             'nama_barang' => 'required|min:2|max:60',
-            'gambar' => 'required',
             'harga' => 'required|numeric',
             'stok' => 'required|numeric',
             'keterangan' => 'required'
@@ -93,14 +110,23 @@ class BarangController extends Controller
         Barang::where('id', $barang->id)
             ->update([
                 'nama_barang' => $request->nama_barang,
-                'gambar' => $request->gambar,
                 'harga' => $request->harga,
                 'stok' => $request->stok,
                 'keterangan' => $request->keterangan
             ]);
 
+        if ($request->hasFile('gambar')) {
+            $image_path = "/uploads/" . $barang->gambar;
+            if (file_exists($image_path)) {
+                @unlink($image_path);
+            }
+            $request->file('gambar')->move('uploads/', $request->file('gambar')->getClientOriginalName());
+            $barang->gambar = $request->file('gambar')->getClientOriginalName();
+            $barang->save();
+        }
+
         alert()->success('Data Berhasil Diubah', 'Optional Title');
-        return redirect('/barang')->with('status', 'Data Siswa Berhasil Diubah!');
+        return redirect('/barang');
     }
 
     /**
