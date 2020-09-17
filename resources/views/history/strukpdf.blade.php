@@ -1,11 +1,45 @@
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .table1 {
+            margin-left: 135px;
+            margin-bottom: 10px;
+        }
+        .table1 th {
+            text-align: left;
+        }
+        .table2, h1 {
+            font-family: sans-serif;
+            text-align: center;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
     @if (!empty($pesanan))
-    <table class="table table-striped" border="1" cellspacing="0" cellpadding="2" style="border:1px solid black; width: 100%;">
+    <h1>STRUK PEMBAYARAN</h1> <br><br><br>
+    <table class="table1">
+        <tr>
+            <th>Nama</th>
+            <td>:</td>
+            <td>{{ auth()->user()->name }}</td>
+        </tr>
+        <tr>
+            <th>Tanggal Pesan</th>
+            <td>:</td>
+            <td>{{ $pesanan->tanggal }}</td>
+        </tr>
+    </table>
+
+    <table class="table2" border="1" cellspacing="0" cellpadding="10" >
         <thead>
             <tr>
                 <th>No</th>
-                <th>Gambar</th>
                 <th>Nama Barang</th>
                 <th>Jumlah</th>
                 <th>Harga</th>
@@ -16,10 +50,7 @@
             <?php $no = 1 ?>
             @foreach ($pesanan_details as $pesanan_detail)
             <tr>
-                <td>{{ $no++ }}</td>
-                <td>
-                    <img src="{{ public_path('uploads/' . $pesanan_detail->barang->gambar ) }}" style="width: 150px; height: 150px">
-                </td>
+                <th>{{ $no++ }}</th>
                 <td>{{ $pesanan_detail->barang->nama_barang }}</td>
                 <td>{{ $pesanan_detail->jumlah }}</td>
                 <td align="right">
@@ -31,7 +62,7 @@
             </tr>
             @endforeach
             <tr>
-                <td colspan="5" align="right">
+                <td colspan="4" align="right">
                     <strong>Total Harga :</strong>
                 </td>
                 <td align="right">
@@ -39,7 +70,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="5" align="right">
+                <td colspan="4" align="right">
                     <strong>Kode Unik :</strong>
                 </td>
                 <td align="right">
@@ -47,7 +78,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="5" align="right">
+                <td colspan="4" align="right">
                     <strong>Total Yang Harus Dibayar :</strong>
                 </td>
                 <td align="right">
@@ -57,3 +88,7 @@
         </tbody>
     </table>
     @endif
+</body>
+</html>
+
+    

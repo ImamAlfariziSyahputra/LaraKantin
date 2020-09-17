@@ -27,7 +27,7 @@
                     <h3><i class="fa fa-shopping-cart" aria-hidden="true"></i> Detail Pemesanan</h3>
                     @if (!empty($pesanan))
                     <p align="right">Tanggal Pesan : {{ $pesanan->tanggal }}</p>
-                    <a href="{{ url('history/preview') }}/{{ $pesanan->id }}" class="btn btn-primary float-right">Export PDF</a>
+                    <a href="{{ url('history/preview') }}/{{ $pesanan->id }}" class="btn btn-warning float-right mb-3"><i class="fa fa-print" aria-hidden="true"></i> Export PDF</a>
                     <table class="table table-striped">
                         <thead>
                             <tr>

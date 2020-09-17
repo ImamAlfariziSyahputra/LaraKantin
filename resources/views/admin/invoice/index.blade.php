@@ -9,7 +9,7 @@
             <table class="table text-center">
                 <thead class="bg-primary text-white">
                     <tr>
-                        <th scope="col">#</th>
+                        <th scope="col">ID Pesanan</th>
                         <th scope="col">ID User</th>
                         <th scope="col">Tanggal</th>
                         <th scope="col">Status</th>
@@ -22,9 +22,9 @@
                     <?php $no = 1 ?>
                     @foreach ($pesanans as $pesanan)
                     <tr>
-                        <th scope="row">{{ $no++ }}</th>
-                        <td>{{ $pesanan->user_id}}</td>
-                        <td>{{ $pesanan->tanggal}}</td>
+                        <td>{{ $pesanan->id }}</td>
+                        <td>{{ $pesanan->user_id }}</td>
+                        <td>{{ $pesanan->tanggal }}</td>
                         <td>{{ $pesanan->status }}</td>
                         <td>{{ $pesanan->kode }}</td>
                         <td>

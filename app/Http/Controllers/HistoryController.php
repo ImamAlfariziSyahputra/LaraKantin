@@ -40,16 +40,17 @@ class HistoryController extends Controller
 
     public function preview(Pesanan $data_pesanan)
     {
-        // $ubah_pesanan = Pesanan::where('id', $data_pesanan->id)->where('user_id', Auth::user()->id)->first();
+        $ubah_pesanan = Pesanan::where('id', $data_pesanan->id)->where('user_id', Auth::user()->id)->first();
         // dump($ubah_pesanan);
         // Ubah status menjadi 2
-        // if ($ubah_pesanan->status == '2') {
-        //     alert()->error('Pesanan Sudah Dibayar', 'Error');
-        //     return redirect('history/' . $ubah_pesanan->id);
-        // } else if ($ubah_pesanan->status = '1'){
-        //     $ubah_pesanan->status = 2;
-        //     $ubah_pesanan->update();
-        // }
+        if ($ubah_pesanan->status == '2') {
+            alert()->error('Pesanan Sudah Dibayar', 'Error');
+            return redirect('history/' . $ubah_pesanan->id);
+            exit;
+        } else if ($ubah_pesanan->status = '1'){
+            $ubah_pesanan->status = 2;
+            $ubah_pesanan->save();
+        }
         // ambil pesanan yang status nya 
         $pesanan = Pesanan::where('id', $data_pesanan->id)->where('user_id', Auth::user()->id)->where('status', 2)->first();
         // dump($pesanan);

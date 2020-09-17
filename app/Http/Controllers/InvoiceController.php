@@ -53,8 +53,8 @@ class InvoiceController extends Controller
      */
     public function show(Pesanan $pesanan)
     {
-        $pesanan_detail = PesananDetail::where('pesanan_id', $pesanan->id)->first();
-        return view('admin/invoice/detail', compact('pesanan_detail'));
+        $pesanan_details = PesananDetail::where('pesanan_id', $pesanan->id)->get();
+        return view('admin.invoice.detail', compact('pesanan_details'));
     }
 
     /**
